@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:places_app/screens/add_places_screen.dart';
+import 'package:provider/provider.dart';
+import '../providers/places.dart';
 
 class PlacesList extends StatelessWidget {
   @override
@@ -9,11 +12,27 @@ class PlacesList extends StatelessWidget {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.add),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).pushNamed(AddPlaces.routename);
+            },
           )
         ],
       ),
-      body: Center(child: CircularProgressIndicator()),
+      body: Consumer<Places>(
+        builder: (ctx, places, child) => places.items.length <= 0
+            ? child
+            : ListView.builder(
+                itemCount: places.items.length,
+                itemBuilder: (context, index) => ListTile(
+                  leading: CircleAvatar(
+                    backgroundImage: FileImage(places.items[index].image),
+                  ),
+                  title: Text(places.items[index].title),
+                  onTap: () {},
+                ),
+              ),
+        child: Center(child: Text('No places Yet')),
+      ),
     );
   }
 }
